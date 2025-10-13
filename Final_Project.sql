@@ -171,7 +171,7 @@ select distinct s.studentid, s.firstname, s.lastname
 from students s
 join enrollments e on s.studentid = e.studentid
 join courses c on e.courseid = c.courseid
-where c.coursename in ('SQL', 'python');
+where c.coursename in ('SQL', 'Data Structures');
 
 -- Query 7 - average credits for all courses
 select avg(credits) as avg_credits from courses;
@@ -207,7 +207,7 @@ select s.studentid, s.firstname, s.lastname
 from students s
 where s.studentid in (select e.studentid from enrollments e
 where e.courseid
-in(select courseid from enrollments group by courseid having count(studentid) > 5));
+in(select courseid from enrollments group by courseid having count(studentid) > 10));
 
 -- Query 13 - extract year from enrollmentdate
 select studentid, firstname, year(enrollmentdate) as enroll_year from students;
@@ -225,7 +225,7 @@ group by e.courseid, c.coursename;
 -- Query 16 - label students as senior or junior
 select firstname, lastname,
 case
-  when year(curdate()) - year(enrollmentdate) > 2 then 'senior'
+  when year(curdate()) - year(enrollmentdate) > 4 then 'senior'
   else 'junior'
 end as status
 from students;
