@@ -38,6 +38,8 @@ create table enrollments(
   courseid int
 );
 
+alter table enrollments add enrollmentdate date;
+
 alter table instructors
 add constraint instructor_department
 foreign key (departmentid) references departments(departmentid);
@@ -62,10 +64,10 @@ values(1,'alice','johnson','alice.johnson@email.com',75000,1),
 
 insert into courses(courseid,coursename,credits,departmentid)
 values(101,'SQL',3,1),
-(102,'Python',4,1),
-(103,'Web Devlopment',3,2),
+(102,'Data Structures',4,1),
+(103,'Python',3,2),
 (104,'Ui/Ux Design',4,2),
-(105,'Physics',5,2);
+(105,'Web development',5,2);
 
 insert into students(studentid,firstname,lastname,email,birthdate,enrollmentdate)
 values(1,'john','doe','john.doe@email.com','2002-12-08','2021-06-10'),
@@ -101,7 +103,7 @@ delete from students where studentid = 6;
 
 -- Course CRUD
 insert into courses(courseid,coursename,credits,departmentid)
-values(106,'Android Devlopment',3,1);
+values(106,'Android Development',3,1);
 
 select * from courses;
 
@@ -112,7 +114,7 @@ delete from courses where courseid = 106;
 
 -- Departments CRUD
 insert into departments(departmentid,departmentname)
-values(3,'Programing');
+values(3,'Programming');
 
 select * from departments;
 
@@ -152,14 +154,14 @@ join departments d on c.departmentid = d.departmentid
 where d.departmentname = 'mathematics'
 limit 5;
 
--- Query 4 - number of students enrolled in each course
+-- Query 4 - number of students enrolled in each course (if exists)
 select c.coursename, count(e.studentid) as total_students
 from courses c
 join enrollments e on c.courseid = e.courseid
 group by c.coursename
 having count(e.studentid) > 5;
 
--- Query 5 - students enrolled in both introduction to sql and data structures
+-- Query 5 - students enrolled in both sql and data structures
 select s.studentid, s.firstname, s.lastname
 from students s
 join enrollments e1 on s.studentid = e1.studentid
@@ -202,7 +204,7 @@ from students s
 left join enrollments e on s.studentid = e.studentid
 left join courses c on e.courseid = c.courseid;
 
--- Query 12 - subquery: students in courses with more than 5 students
+-- Query 12 - subquery: students in courses with more than 10 students (if exists)
 select s.studentid, s.firstname, s.lastname
 from students s
 where s.studentid in (select e.studentid from enrollments e
